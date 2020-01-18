@@ -508,6 +508,23 @@ function init()
   end
   lfo.init()
 
+  -- macro controls
+  -- ie: use a 16n or similar almost as if it were arc
+  params:add_separator()
+
+  -- macro 1: speed/*scrub
+  params:add_control("macro1", "macro 1", controlspec.new(0, 1, "lin", .01, 0))
+  params:set_action("macro1", function(v) macro_control(1, v) end)
+  -- macro 2: pitch/*fine
+  params:add_control("macro2", "macro 2", controlspec.new(0, 1, "lin", .01, 0))
+  params:set_action("macro2", function(v) macro_control(2, v) end)
+  -- macro 3: size/*spread
+  params:add_control("macro3", "macro 3", controlspec.new(0, 1, "lin", .01, 0))
+  params:set_action("macro3", function(v) macro_control(3, v) end)
+  -- macro 4: density/*jitter
+  params:add_control("macro4", "macro 4", controlspec.new(0, 1, "lin", .01, 0))
+  params:set_action("macro4", function(v) macro_control(4, v) end)
+
   -- arc sensitivty settings
   params:add_separator()
 
@@ -874,6 +891,70 @@ function grid_refresh()
   local buf = grid_ctl | grid_voc
   buf:render(g)
   g:refresh()
+end
+
+prev_macro_scrub = - 100 
+
+function macro_control(m,v)
+  local macro_is = ""
+  if m == 1 then
+    if alt then
+      macro_is = "scrub"
+      local delt = 0
+      if prev_macro_scrub == -100 then
+        prev_macro_scrub = v
+      else
+        if v > prev_macro_scrub then
+          delt = 1
+        elseif v < prev_macro_scrub then
+          delt = -1
+        end
+        print("macro scrub to "..delt)
+        prev_macro_scrub = v
+        scrub(track,delt)
+      end
+    else
+      macro_is = "speed"
+      local final_value = (v * 600) - 300
+      params:set(track .. "speed", final_value)
+    end
+  elseif m == 2 then
+    if alt then
+      macro_is = "fine"
+         -- params:add_taper(v .. "pitch", v .. sep .. "pitch", -24, 24, 0, 0, "st")
+      -- params:set_action(v .. "pitch", function(value) engine.pitch(v, math.pow(0.5, -value / 12)) end)
+      local final_value = ((v * 48) - 24) / 12.0
+      params:set(track .. "pitch", final_value)
+    else
+      macro_is = "pitch"
+      -- multiply by 48, - 24
+      local final_value = (v * 48) - 24
+      params:set(track .. "pitch", final_value)
+    end
+  elseif m == 3 then
+    if alt then
+      macro_is = "spread"
+      -- multiply by 100
+      local final_value = v*100
+      params:set(track .. "spread", final_value)
+    else
+      macro_is = "size"
+      local final_value = (v * 500)
+      final_value = util.clamp(final_value, 1, 500)
+      params:set(track .. "size", final_value)
+    end
+  elseif m == 4 then
+    if alt then
+      macro_is = "jitter"
+      local final_value = v*500
+      params:set(track .. "jitter", final_value)
+    else
+      macro_is = "density"
+      local final_value = v*512
+      params:set(track .. "density", final_value)
+    end
+  end
+  -- print("macro "..m.." ("..macro_is..") "..v)
 end
 
 
