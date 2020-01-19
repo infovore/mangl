@@ -229,6 +229,7 @@ local function record_handler(n)
 
   if n == record_bank then
     -- stop if pressed current recording
+    
     stop_recording()
   else
     local pattern = pattern_banks[n]
@@ -927,54 +928,42 @@ function macro_control(m,v)
       end
     else
       macro_is = "speed"
-      local final_value = (v * 600) - 300
-      params:set(track .. "speed", final_value)
+      params:set_raw(track .. "speed", v)
     end
   elseif m == 2 then
     if alt then
       macro_is = "fine"
-         -- params:add_taper(v .. "pitch", v .. sep .. "pitch", -24, 24, 0, 0, "st")
-      -- params:set_action(v .. "pitch", function(value) engine.pitch(v, math.pow(0.5, -value / 12)) end)
-      local final_value = ((v * 48) - 24) / 12.0
-      params:set(track .. "pitch", final_value)
+      params:set(track .. "pitch", util.linlin(0,1,-4,4,v))
     else
       macro_is = "pitch"
-      -- multiply by 48, - 24
-      local final_value = (v * 48) - 24
-      params:set(track .. "pitch", final_value)
+      params:set_raw(track .. "pitch", v)
     end
   elseif m == 3 then
     if alt then
       macro_is = "spread"
       -- multiply by 100
-      local final_value = v*100
-      params:set(track .. "spread", final_value)
+      params:set_raw(track .. "spread", v)
     else
       macro_is = "size"
-      local final_value = (v * 500)
-      final_value = util.clamp(final_value, 1, 500)
-      params:set(track .. "size", final_value)
+      params:set_raw(track .. "size", v)
     end
   elseif m == 4 then
     if alt then
       macro_is = "jitter"
-      local final_value = v*500
-      params:set(track .. "jitter", final_value)
+      params:set_raw(track .. "jitter", v)
     else
       macro_is = "density"
-      local final_value = v*512
-      params:set(track .. "density", final_value)
+      params:set_raw(track .. "density", v)
     end
   elseif m == 5 then
     macro_is = "cutoff"
-    local final_value = util.linexp(0,1,20,20000,v)
-    params:set(track .. "cutoff", final_value)
+    params:set_raw(track .. "cutoff", v)
   elseif m == 6 then
     macro_is = "q"
-    params:set(track .. "q", v)
+    params:set_raw(track .. "q", v)
   elseif m == 7 then
     macro_is = "send"
-    params:set(track .. "send", v)
+    params:set_raw(track .. "send", v)
   end
   -- print("macro "..m.." ("..macro_is..") "..v)
 end
