@@ -49,6 +49,13 @@ _nb: loop in/out is set in
 one button press. loop in
 on press, loop out on release._
 
+"macro" params affect the 
+current track only.
+
+map macro params to midi cc
+controllers for interactions
+similar to arc
+
 ## grid
 
 ![](assets/mangl.png)
