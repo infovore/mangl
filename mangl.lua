@@ -513,28 +513,28 @@ function init()
   params:add_separator()
 
   -- macro 1: speed/*scrub
-  params:add_control("macro1", "macro 1", controlspec.new(0, 1, "lin", .01, 0))
+  params:add_control("macro1", "macro 1 (speed/*scrub)", controlspec.new(0, 1, "lin", .01, 0))
   params:set_action("macro1", function(v) macro_control(1, v) end)
   -- macro 2: pitch/*fine
-  params:add_control("macro2", "macro 2", controlspec.new(0, 1, "lin", .01, 0))
+  params:add_control("macro2", "macro 2 (pitch/*fine)", controlspec.new(0, 1, "lin", .01, 0))
   params:set_action("macro2", function(v) macro_control(2, v) end)
   -- macro 3: size/*spread
-  params:add_control("macro3", "macro 3", controlspec.new(0, 1, "lin", .01, 0))
+  params:add_control("macro3", "macro 3 (size/*spread)", controlspec.new(0, 1, "lin", .01, 0))
   params:set_action("macro3", function(v) macro_control(3, v) end)
   -- macro 4: density/*jitter
-  params:add_control("macro4", "macro 4", controlspec.new(0, 1, "lin", .01, 0))
+  params:add_control("macro4", "macro 4 (density/*jitter)", controlspec.new(0, 1, "lin", .01, 0))
   params:set_action("macro4", function(v) macro_control(4, v) end)
 
   -- macro 5: cutoff
-  params:add_control("macro5", "macro 5", controlspec.new(0, 1, "lin", .01, 0))
+  params:add_control("macro5", "macro 5 (cutoff)", controlspec.new(0, 1, "lin", .01, 0))
   params:set_action("macro5", function(v) macro_control(5, v) end)
 
   -- macro 5: q
-  params:add_control("macro6", "macro 6", controlspec.new(0, 1, "lin", .01, 0))
+  params:add_control("macro6", "macro 6 (q)", controlspec.new(0, 1, "lin", .01, 0))
   params:set_action("macro6", function(v) macro_control(6, v) end)
 
   -- macro 7: delay send
-  params:add_control("macro7", "macro 7", controlspec.new(0, 1, "lin", .01, 0))
+  params:add_control("macro7", "macro 7 (delay send)", controlspec.new(0, 1, "lin", .01, 0))
   params:set_action("macro7", function(v) macro_control(7, v) end)
 
   -- arc sensitivty settings
